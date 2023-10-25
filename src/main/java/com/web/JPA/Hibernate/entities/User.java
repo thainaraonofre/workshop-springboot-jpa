@@ -1,24 +1,33 @@
 package com.web.JPA.Hibernate.entities;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import jakarta.persistence.Id;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import java.util.Objects;
 
+@Entity
+@Table(name = "tb_user")
 public class User {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private String email;
     private String phone;
-    private String passoword;
+    private String password;
 
-    public User (){
+    public User() {
     }
 
-    public User(Long id, String name, String email, String phone, String passoword) {
+    public User(Long id, String name, String email, String phone, String password) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.phone = phone;
-        this.passoword = passoword;
+        this.password = password;
     }
 
     public Long getId() {
@@ -53,18 +62,19 @@ public class User {
         this.phone = phone;
     }
 
-    public String getPassoword() {
-        return passoword;
+    public String getPassword() {
+        return password;
     }
 
-    public void setPassoword(String passoword) {
-        this.passoword = passoword;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof User user)) return false;
+        if (!(o instanceof User)) return false;
+        User user = (User) o;
         return Objects.equals(getId(), user.getId());
     }
 
@@ -72,7 +82,4 @@ public class User {
     public int hashCode() {
         return Objects.hash(getId());
     }
-
-
-
 }
