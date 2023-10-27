@@ -1,6 +1,7 @@
 package com.web.JPA.Hibernate.config;
 
 
+
 import com.web.JPA.Hibernate.entities.User;
 import com.web.JPA.Hibernate.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
