@@ -2,8 +2,11 @@ package com.web.JPA.Hibernate.services;
 
 import com.web.JPA.Hibernate.entities.User;
 import com.web.JPA.Hibernate.repositories.UserRepository;
+import com.web.JPA.Hibernate.services.exceptions.DatabaseException;
 import com.web.JPA.Hibernate.services.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 
@@ -16,24 +19,29 @@ public class UserService {
     @Autowired
     private UserRepository repository;
 
-    public List<User> findAll(){
+    public List<User> findAll() {
         return repository.findAll();
     }
 
-    public User findById (Long id) {
+    public User findById(Long id) {
         Optional<User> obj = repository.findById(id);
         return obj.orElseThrow(() -> new ResourceNotFoundException(id));
     }
 
-    public User insert (User obj) {
+    public User insert(User obj) {
         return repository.save(obj);
     }
 
-    public void delete (Long id){
-        repository.deleteById(id);
+    public void delete(Long id) {
+        try {
+            repository.deleteById(id);
+        }catch (DataIntegrityViolationException e) {
+            throw new DatabaseException(e.getMessage());
+        }
+
     }
 
-    public User update (Long id, User obj){
+    public User update(Long id, User obj) {
         User entity = repository.getReferenceById(id);
         updateData(entity, obj);
         return repository.save(entity);
